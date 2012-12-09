@@ -1,0 +1,36 @@
+td {
+	border:1px solid #000000;
+	padding:0.2em;
+}
+
+img.icon {
+	border:0;
+	width:25px;
+	height:25px;
+}
+
+.warning {
+	color:#FF0000;
+}
+
+tr.header td {
+	text-align:center;
+	font-weight:bold;
+	background-color:#AAAAFF;
+}
+
+tr.row-complete td {
+	background-color:#DDFFDD;
+}
+
+tr.row-incomplete td {
+	background-color:#FFDDDD;
+}
+
+tr.row-final td {
+	border:0;
+}
+
+tr.row:hover td, tr.row-complete:hover td, tr.row-incomplete:hover td {
+	background-color:#DDDDFF;
+}
