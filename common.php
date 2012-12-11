@@ -299,6 +299,7 @@
 			
 			//place group actions as the last line
 			$actionCol = "";
+			$actionCol .= " <input type='image' formaction='".PAGE_ZIP."?grouped' title='Compresser' onclick='return(confirm(\"Compresser la sélection ?\"));' src='".SUBMIT_ZIP."' />";
 			
 			$description .= "<tr class='row'>";
 			$description .= "<td colspan='4'>".$actionCol."</td>";
