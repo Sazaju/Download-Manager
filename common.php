@@ -224,22 +224,13 @@
 				if ($hasTorrent) {
 						$relativePath = substr($filePath, strpos($filePath, $torrent->name()));
 						$calculatedSize = 0;
-						$dirsToInclude = array();
 						foreach($torrent->content() as $fileRelativePath => $fileLength) {
 							if (strpos($fileRelativePath, $relativePath) === 0) {
-								$dir = substr($fileRelativePath, strpos($fileRelativePath, basename($filePath)));
-								while($dir != dirname($dir)) {
-									$dir = dirname($dir);
-									array_push($dirsToInclude, $dir);
-								}
 								$calculatedSize += $fileLength;
 							}
 						}
-						$dirsToInclude = array_filter(array_unique($dirsToInclude), "notRecursiveDirectory");
-						$calculatedSize += filesize(dirname($filePath)) * count($dirsToInclude);
 						
 						if ($calculatedSize < $realSize) {
-							$calculatedSize = $realSize;
 							$percent = "?";
 						}
 						else {
