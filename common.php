@@ -1,6 +1,19 @@
 <?php
 	require_once('Torrent.php');
-	require_once('config.php');
+$criticalDataFile = 'config.php';
+$needConfig = true;
+if (is_file($criticalDataFile)) {
+	require_once($criticalDataFile);
+	if (defined('OWNER') && defined('DOWNLOADS_DIR') && defined('TORRENTS_DIR')) {
+		$needConfig = false;
+	}
+}
+if ($needConfig) {
+	require_once("criticalConfig.php");
+	exit;
+} else {
+	// all green, just continue
+}
 	
 	/*******\
 	CONSTANTS
