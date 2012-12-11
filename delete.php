@@ -1,7 +1,18 @@
 <?php
 	require_once("common.php");
 	
-	delete(getPathFromURL());
+	if (isset($_GET["grouped"])) {
+		if (isset($_POST['selection'])) {
+			$paths = array();
+			foreach($_POST['selection'] as $md5) {
+				delete(getPathForMD5Chain(DOWNLOADS_DIR, $md5));
+			}
+		} else {
+			throw new Exception("No selection provided.");
+		}
+	} else {
+		delete(getPathFromURL());
+	}
 ?>
 
 <html>

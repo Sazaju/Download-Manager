@@ -300,6 +300,7 @@
 			//place group actions as the last line
 			$actionCol = "";
 			$actionCol .= " <input type='image' formaction='".PAGE_ZIP."?grouped' title='Compresser' onclick='return(confirm(\"Compresser la sélection ?\"));' src='".SUBMIT_ZIP."' />";
+			$actionCol .= " <input type='image' formaction='".PAGE_DELETE."?grouped' title='Supprimer' onclick='return(confirm(\"Supprimer la sélection ?\"));' src='".SUBMIT_DELETE."' />";
 			
 			$description .= "<tr class='row'>";
 			$description .= "<td colspan='4'>".$actionCol."</td>";
