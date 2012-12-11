@@ -55,6 +55,7 @@
 	foreach($constants as $key => $data) {
 		define("PAGE_".strtoupper($key), $data['page']);
 		define("ICON_".strtoupper($key), "<img class='icon' src='".$data['icon']."'/>");
+		define("SUBMIT_".strtoupper($key), $data['icon']);
 	}
 	unset($constants);
 	
@@ -203,8 +204,10 @@
 						</p>";
 		if (count($files) > 0) {
 			//open table
+			$description .= "<form method='post'>";
 			$description .= "<table>";
 			$description .= "<tr class='header'>
+								<td></td>
 								<td>Fichier</td>
 								<td>Taille</td>
 								<td>Actions</td>
@@ -283,18 +286,27 @@
 					$actionCol .= " <a href='".PAGE_DELETE."?".$MD5Arg."' title='Supprimer' onclick='return(confirm(\"Supprimer ".$fileName.($isDir ? " et tout sont contenu" : "")." ?\"));'>".ICON_DELETE."</a>";
 				}
 				
-				$selectCol = "<input type='checkbox' name='selection[]' value='".$MD5."'>";
+				$selectCol = ($hasTorrent ? "" : "<input type='checkbox' name='selection[]' value='".$MD5."'>");
 				
 				//place data in the table
 				$description .= "<tr class='row".($hasTorrent ? $isCompleted ? "-complete" : "-incomplete" : "")."'>";
+					$description .= "<td>".$selectCol."</td>";
 					$description .= "<td>".$fileCol."</td>";
 					$description .= "<td>".$sizeCol."</td>";
 					$description .= "<td><center>".$actionCol."</center></td>";
 				$description .= "</tr>";
 			}
 			
+			//place group actions as the last line
+			$actionCol = "";
+			
+			$description .= "<tr class='row'>";
+			$description .= "<td colspan='4'>".$actionCol."</td>";
+			$description .= "</tr>";
+			
 			//close table
 			$description .= "</table>";
+			$description .= "</form>";
 		} else {
 			$description .= "<p><i>Aucun fichier, ajoutez de nouveaux torrents ci-dessus pour qu'ils soient t&eacute;l&eacute;charg&eacute;s.</i></p>";
 		}
