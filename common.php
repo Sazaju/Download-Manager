@@ -400,12 +400,16 @@
 	}
 	
 	function is_rar($filePath) {
-		$rar = RarArchive::open($filePath);
-		$isRar = $rar !== FALSE;
-		if ($isRar) {
-			$rar->close();
+		if (class_exists('RarArchive')) {
+			$rar = RarArchive::open($filePath);
+			$isRar = $rar !== FALSE;
+			if ($isRar) {
+				$rar->close();
+			}
+			return $isRar;
+		} else {
+			return false;
 		}
-		return $isRar;
 	}
 	
 	function is_torrent($filePath) {
