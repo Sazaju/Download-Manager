@@ -300,9 +300,9 @@
 			
 			//place group actions as the last line
 			$actionCol = "";
-			$actionCol .= " <input type='image' formaction='".PAGE_ZIP."?grouped' title='Compresser' onclick='return(confirm(\"Compresser la sélection ?\"));' src='".SUBMIT_ZIP."' />";
-			$actionCol .= " <input type='image' formaction='".PAGE_MOVE."?grouped' title='D&eacute;placer' src='".SUBMIT_MOVE."' />";
-			$actionCol .= " <input type='image' formaction='".PAGE_DELETE."?grouped' title='Supprimer' onclick='return(confirm(\"Supprimer la sélection ?\"));' src='".SUBMIT_DELETE."' />";
+			$actionCol .= " <input type='image' class='icon' formaction='".PAGE_ZIP."?grouped' title='Compresser' onclick='return(confirm(\"Compresser la sélection ?\"));' src='".SUBMIT_ZIP."' />";
+			$actionCol .= " <input type='image' class='icon' formaction='".PAGE_MOVE."?grouped' title='D&eacute;placer' src='".SUBMIT_MOVE."' />";
+			$actionCol .= " <input type='image' class='icon' formaction='".PAGE_DELETE."?grouped' title='Supprimer' onclick='return(confirm(\"Supprimer la sélection ?\"));' src='".SUBMIT_DELETE."' />";
 			
 			$description .= "<script type='text/javascript'>
 							function switchAll(x) {
