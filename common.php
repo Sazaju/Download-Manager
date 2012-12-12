@@ -202,6 +202,7 @@
 							Si cela arrive, attendez simplement que la progression disparaisse, cela garantit que plus rien n'est en cours.
 							En cas de doute, n'h&eacute;sitez pas &agrave; <a href='mailto:".ADMIN_MAIL."'>contacter l'administrateur</a>.
 						</p>";
+		
 		if (count($files) > 0) {
 			//open table
 			$description .= "<form method='post'>";
@@ -302,8 +303,21 @@
 			$actionCol .= " <input type='image' formaction='".PAGE_ZIP."?grouped' title='Compresser' onclick='return(confirm(\"Compresser la sélection ?\"));' src='".SUBMIT_ZIP."' />";
 			$actionCol .= " <input type='image' formaction='".PAGE_DELETE."?grouped' title='Supprimer' onclick='return(confirm(\"Supprimer la sélection ?\"));' src='".SUBMIT_DELETE."' />";
 			
+			$description .= "<script type='text/javascript'>
+							function switchAll(x) {
+								for(var i = 0, l = x.form.length ; i < l ; i++) {
+									if(x.form[i].type == 'checkbox' && x.form[i].name != 'sAll') {
+										x.form[i].checked = x.checked;
+									} else {
+										// not a checkbox nor one we should care about
+									}
+								}
+							}
+							</script>";
+			
 			$description .= "<tr class='row'>";
-			$description .= "<td colspan='4'>".$actionCol."</td>";
+			$description .= "<td><input type='checkbox' name='sAll' onclick='switchAll(this)' /></td>";
+			$description .= "<td colspan='3'>".$actionCol."</td>";
 			$description .= "</tr>";
 			
 			//close table
