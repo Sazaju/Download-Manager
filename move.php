@@ -1,7 +1,6 @@
 <?php
 	require_once("common.php");
 	
-	$filePath = getPathFromURL();
 	$destination = null;
 	$warning = array();
 	
@@ -16,14 +15,24 @@
 	else if (isset($_POST['new'])) {
 		$dirName = $_POST['new'];
 		$destination = DOWNLOADS_DIR."/".$dirName;
-		mkdir($destination);
+		if (!empty($dirName)) {
+			mkdir($destination);
+		} else {
+			// poot at the root, no need to create it
+		}
 	}
 	
 	/* MOVING */
-	
 	if ($destination !== null) {
-		$newPath = $destination."/".fileName($filePath);
-		rename($filePath, $newPath);
+		$files = isset($_POST['files']) ? $_POST['files'] : null;
+		if (empty($files)) {
+			throw new Exception('No file selected.');
+		}
+		
+		foreach($files as $path) {
+			$newPath = $destination."/".fileName($path);
+			rename($path, $newPath);
+		}
 ?>
 <html>
 	<head>
@@ -40,19 +49,40 @@
 	/* DISPLAY */
 	
 	else {
-		$fileName = fileName($filePath);
+		$filePaths = array();
+		if (isset($_GET["grouped"])) {
+			if (isset($_POST['selection'])) {
+				foreach($_POST['selection'] as $md5) {
+					$filePaths[] = getPathForMD5Chain(DOWNLOADS_DIR, $md5);
+				}
+			} else {
+				throw new Exception("No selection provided.");
+			}
+		} else {
+			$filePaths[] = getPathFromURL();
+		}
+		
+		$fileName = "";
+		foreach($filePaths as $path) {
+			$fileName .= fileName($path).' + ';
+		}
+		$fileName = substr($fileName, 0, strlen($fileName)-3);
 		$dirPath = DOWNLOADS_DIR;
 		$allFiles = getContentOf($dirPath);
 		$dirs = array();
 		foreach($allFiles as $file) {
 			$path = $dirPath."/".$file;
-			if (is_dir($path) && $path != $filePath) {
+			if (is_dir($path) && !in_array($path, $filePaths)) {
 				array_push($dirs, $path);
 			}
 		}
 		
 		$title = TITLE." - D&eacute;placer ".$fileName;
-		$self = fileName($_SERVER['PHP_SELF']).'?'.$_SERVER['QUERY_STRING']
+		
+		$formList = "";
+		foreach($filePaths as $path) {
+			$formList .= "<input type='hidden' name='files[]' value='$path'/>";
+		}
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
@@ -72,7 +102,8 @@
 			Vous vous appr&ecirc;tez &agrave; d&eacute;placer <b><?php echo $fileName;?></b>,
 			dans quel r&eacute;pertoire souhaitez-vous le placer ?
 		</p>
-		<form method='POST' action='<?php echo $seld; ?>' enctype="multipart/form-data">
+		<form method='POST' enctype="multipart/form-data">
+			<?php echo $formList;?>
 			<label>
 				Existant : 
 				<select name="select">
@@ -85,7 +116,8 @@
 			</label>
 			<input type="submit" value="D&eacute;placer"/>
 		</form>
-		<form method='POST' action='<?php echo $seld; ?>' enctype="multipart/form-data">
+		<form method='POST' enctype="multipart/form-data">
+			<?php echo $formList;?>
 			<label>
 				Nouveau : <input type="text" name="new" />
 			</label>
