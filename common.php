@@ -401,8 +401,16 @@
 		if ($path === null) {
 			return 0;
 		} else if (is_file($path)) {
-			$stat = stat($path);
-			return min($stat['size'], 512*$stat['blocks']);
+			if (PHP_OS == "Linux") {
+				// TODO overload the systemt: restrict its use to torrent files only
+				$stat = stat($path);
+				$cmd = 'du -s --block-size=1 "'.$path.'"';
+				$result = (float) exec($cmd);
+				return min($stat['size'], $result);
+			} else {
+				$stat = stat($path);
+				return min($stat['size'], 512*$stat['blocks']);
+			}
 		}
 		else if (is_dir($path)) {
 			$size = 0;
