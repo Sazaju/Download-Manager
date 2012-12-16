@@ -50,7 +50,7 @@
 		<p>
 			Vous utilisez actuellement <?php echo format_length(getSize(DOWNLOADS_DIR)); ?> (<?php echo format_length(disk_free_space(DOWNLOADS_DIR)); ?> restant).
 		</p>
-		<?php $content = getDirectoryDescription(TORRENTS_DIR); echo $content; unset($content); ?>
+		<?php echo getDirectoryDescription(TORRENTS_DIR); ?>
 		
 		<p>
 			En cas de soucis ou pour toute question, vous pouvez toujours contacter l'administrateur &agrave; cette adresse e-mail :
