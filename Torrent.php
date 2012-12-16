@@ -322,10 +322,14 @@ class Torrent {
 			while ( $done = curl_multi_info_read( $curl ) ) {
 				$info = curl_getinfo( $done['handle'] );
             	$tracker = array_shift( explode( '?', $info['url'], 2 ) );
-            	if ( empty( $info['http_code'] ) )
-            		continue $scrape[$tracker] = self::set_error( new Exception( 'Tracker request timeout (' . $timeout . 's)' ), true );
-            	elseif ( $info['http_code'] != 200 )
-            		continue $scrape[$tracker] = self::set_error( new Exception( 'Tracker request failed (' . $info['http_code'] . ' code)' ), true );
+            	if ( empty( $info['http_code'] ) ) {
+				$scrape[$tracker] = self::set_error( new Exception( 'Tracker request timeout (' . $timeout . 's)' ), true );
+            		continue;
+            	}
+            	elseif ( $info['http_code'] != 200 ) {
+            		$scrape[$tracker] = self::set_error( new Exception( 'Tracker request failed (' . $info['http_code'] . ' code)' ), true );
+            		continue;
+            	}
 				$stats = self::decode_data( curl_multi_getcontent( $done['handle']  ) );
 				curl_multi_remove_handle( $curl, $done['handle'] );
 				$scrape[$tracker] = empty( $stats['files'] ) ?
@@ -658,10 +662,14 @@ class Torrent {
 		$path	= explode( DIRECTORY_SEPARATOR, dirname( realpath( current( $files ) ) ) );
 		$pieces = null; $info_files = array(); $count = count($files) - 1;
 		foreach ( $files as $i => $file ) {
-			if ( $path != array_intersect_assoc( $file_path = explode( DIRECTORY_SEPARATOR, $file ), $path ) )
-				continue self::set_error( new Exception( 'Files must be in the same folder: "' . $file . '" discarded' ) );
-			if ( ! $handle = self::fopen( $file, $filesize = self::filesize( $file ) ) )
-				continue self::set_error( new Exception( 'Failed to open file: "' . $file . '" discarded' ) );
+			if ( $path != array_intersect_assoc( $file_path = explode( DIRECTORY_SEPARATOR, $file ), $path ) ) {
+				self::set_error( new Exception( 'Files must be in the same folder: "' . $file . '" discarded' ) );
+				continue;
+			}
+			if ( ! $handle = self::fopen( $file, $filesize = self::filesize( $file ) ) ) {
+				self::set_error( new Exception( 'Failed to open file: "' . $file . '" discarded' ) );
+				continue;
+			}
 			$pieces .= $this->pieces( $handle, $piece_length, $count == $i );
 			$info_files[] = array(
 				'length'	=> $filesize,
