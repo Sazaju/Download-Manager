@@ -237,7 +237,7 @@
 				
 				$sizeCol = "";
 				$isCompleted = false;
-				$realSize = getSize($filePath, $hasTorrent);
+				$realSize = getSize($filePath);
 				if ($hasTorrent) {
 						$relativePath = substr($filePath, strpos($filePath, $torrent->name()));
 						$calculatedSize = 0;
@@ -397,24 +397,17 @@
 	}
 	
 	clearstatcache();
-	function getSize($path, $computeDeeply = false) {
+	function getSize($path) {
 		if ($path === null) {
 			return 0;
 		} else if (is_file($path)) {
-			if (PHP_OS == "Linux" && $computeDeeply) {
-				$stat = stat($path);
-				$cmd = 'du -s --block-size=1 "'.$path.'"';
-				$result = (float) exec($cmd);
-				return min($stat['size'], $result);
-			} else {
-				$stat = stat($path);
-				return min($stat['size'], 512*$stat['blocks']);
-			}
+			$stat = stat($path);
+			return min($stat['size'], 512*$stat['blocks']);
 		}
 		else if (is_dir($path)) {
 			$size = 0;
 			foreach(getContentOf($path, true) as $file){
-				$size += getSize($path.DIRECTORY_SEPARATOR.$file, $computeDeeply);
+				$size += getSize($path.DIRECTORY_SEPARATOR.$file);
 			}
 			return $size;
 		}
