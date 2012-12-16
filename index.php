@@ -11,34 +11,49 @@
 		<link rel="stylesheet" media="screen" type="text/css" title="Style" href="style.css" />
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<script type="text/javascript" src="php.js"></script>
+		<script type="text/javascript">
+			function show(id) {
+				if(document.getElementById) {
+					x = document.getElementById(id);
+					if(x.style.display == "none") {
+						x.style.display = "";
+					}
+					else {
+						x.style.display = "none";
+					}
+				}
+			}
+		</script>
 	</head>
 	<body>
 		<h1><?php echo $title;?></h1>
 		
 		<?php displayWarning(); ?>
-		<h2>T&eacute;l&eacute;chargement de fichiers :</h2>
-		<form method='POST' action='upload.php' enctype="multipart/form-data">
-			<label>
-				Fichier torrent :
-				<input type="file" name="torrents[]" multiple="multiple"/>
-			</label>
-			<input type="submit" value="Envoyer"/>
-		</form>
-		<form method='POST' action='upload.php' enctype="multipart/form-data">
-			<label>
-				Lien DDL : <span class="warning">(peut-&ecirc;tre long !)</span>
-				<input type="text" name="direct" />
-			</label>
-			<input type="submit" value="T&eacute;l&eacute;charger"/>
-		</form>
-		<form method='POST' action='upload.php' enctype="multipart/form-data">
-			<label>
-				Lien Megaupload : <span class="warning">(peut-&ecirc;tre long !)</span>
-				<input type="text" name="megaupload" />
-			</label>
-			<input type="submit" value="T&eacute;l&eacute;charger"/>
-		</form>
-		<p>Les fichiers sont ajout&eacute;s &agrave; la liste ci-dessous.</p>
+		<a href="#" onclick="show('addFile');return(false)"><h2>T&eacute;l&eacute;chargement de fichiers :</h2></a>
+		<object id="addFile" style="display: none;">
+			<form method='POST' action='upload.php' enctype="multipart/form-data">
+				<label>
+					Fichier torrent :
+					<input type="file" name="torrents[]" multiple="multiple"/>
+				</label>
+				<input type="submit" value="Envoyer"/>
+			</form>
+			<form method='POST' action='upload.php' enctype="multipart/form-data">
+				<label>
+					Lien DDL : <span class="warning">(peut-&ecirc;tre long !)</span>
+					<input type="text" name="direct" />
+				</label>
+				<input type="submit" value="T&eacute;l&eacute;charger"/>
+			</form>
+			<form method='POST' action='upload.php' enctype="multipart/form-data">
+				<label>
+					Lien Megaupload : <span class="warning">(peut-&ecirc;tre long !)</span>
+					<input type="text" name="megaupload" />
+				</label>
+				<input type="submit" value="T&eacute;l&eacute;charger"/>
+			</form>
+			<p>Les fichiers sont ajout&eacute;s &agrave; la liste ci-dessous.</p>
+		</object>
 		
 		<h2>Liste des t&eacute;l&eacute;chargements :</h2>
 		<p>
