@@ -237,7 +237,7 @@
 				
 				$sizeCol = "";
 				$isCompleted = false;
-				$realSize = getSize($filePath);
+				$realSize = getSize($filePath, $hasTorrent);
 				if ($hasTorrent) {
 						$relativePath = substr($filePath, strpos($filePath, $torrent->name()));
 						$calculatedSize = 0;
@@ -397,12 +397,11 @@
 	}
 	
 	clearstatcache();
-	function getSize($path) {
+	function getSize($path, $computeDeeply = false) {
 		if ($path === null) {
 			return 0;
 		} else if (is_file($path)) {
-			if (PHP_OS == "Linux") {
-				// TODO overload the systemt: restrict its use to torrent files only
+			if (PHP_OS == "Linux" && $computeDeeply) {
 				$stat = stat($path);
 				$cmd = 'du -s --block-size=1 "'.$path.'"';
 				$result = (float) exec($cmd);
@@ -415,7 +414,7 @@
 		else if (is_dir($path)) {
 			$size = 0;
 			foreach(getContentOf($path, true) as $file){
-				$size += getSize($path.DIRECTORY_SEPARATOR.$file);
+				$size += getSize($path.DIRECTORY_SEPARATOR.$file, $computeDeeply);
 			}
 			return $size;
 		}
