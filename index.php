@@ -48,7 +48,7 @@
 			Si vous trouvez que cela dure trop longtemps, vous pouvez <a href="mailto:<?php echo ADMIN_MAIL; ?>">contacter l'administrateur</a> pour avoir plus d'informations.
 		</p>
 		<p>
-			Vous utilisez actuellement <?php echo format_length(getSize(DOWNLOADS_DIR)); ?>.
+			Vous utilisez actuellement <?php echo format_length(getSize(DOWNLOADS_DIR)); ?> (<?php echo format_length(disk_free_space(DOWNLOADS_DIR)); ?> restant).
 		</p>
 		<?php $content = getDirectoryDescription(TORRENTS_DIR); echo $content; unset($content); ?>
 		
