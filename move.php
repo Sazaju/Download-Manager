@@ -7,7 +7,7 @@
 	/* EXISTING DIRECTORY */
 	
 	if (isset($_POST['select'])) {
-		$destination = $_POST['select'];
+		$destination = html_entity_decode($_POST['select']);
 	}
 	
 	/* NEW DIRECTORY */
@@ -30,7 +30,7 @@
 		}
 		
 		foreach($files as $path) {
-			$newPath = $destination."/".fileName($path);
+			$newPath = $destination."/".fileName(html_entity_decode($path));
 			rename($path, $newPath);
 		}
 ?>
@@ -81,7 +81,7 @@
 		
 		$formList = "";
 		foreach($filePaths as $path) {
-			$formList .= "<input type='hidden' name='files[]' value='$path'/>";
+			$formList .= '<input type="hidden" name="files[]" value="'.htmlentities($path).'"/>';
 		}
 ?>
 
@@ -109,7 +109,7 @@
 				<select name="select">
 					<?php
 						foreach($dirs as $dirPath) {
-							echo '<option value="'.$dirPath.'">'.fileName($dirPath).'</option>';
+							echo '<option value="'.htmlentities($dirPath).'">'.fileName($dirPath).'</option>';
 						}
 					?>
 				</select>
