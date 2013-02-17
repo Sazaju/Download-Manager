@@ -15,6 +15,9 @@
 		// all green, just continue
 	}
 	
+	// manage non ASCII characters
+	setlocale(LC_ALL, 'en_US.UTF8');
+	
 	/*******\
 	CONSTANTS
 	\*******/
