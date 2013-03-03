@@ -287,7 +287,7 @@
 										."}"
 									."'>".ICON_RENAME."</a>";
 					$actionCol .= " <a href='".PAGE_MOVE."?".$MD5Arg."' title='D&eacute;placer'>".ICON_MOVE."</a>";
-					$actionCol .= " <a href='".PAGE_DELETE."?".$MD5Arg."' title='Supprimer' onclick='return(confirm(\"Supprimer ".$fileName.($isDir ? " et tout sont contenu" : "")." ?\"));'>".ICON_DELETE."</a>";
+					$actionCol .= " <a href='".PAGE_DELETE."?".$MD5Arg."' title='Supprimer'>".ICON_DELETE."</a>";
 				}
 				
 				$selectCol = ($hasTorrent ? "" : "<input type='checkbox' name='selection[]' value='".$MD5."'>");
@@ -305,7 +305,7 @@
 			$actionCol = "";
 			$actionCol .= " <input type='image' class='icon' formaction='".PAGE_ZIP."?grouped' title='Compresser' onclick='return(confirm(\"Compresser la sélection ?\"));' src='".SUBMIT_ZIP."' />";
 			$actionCol .= " <input type='image' class='icon' formaction='".PAGE_MOVE."?grouped' title='D&eacute;placer' src='".SUBMIT_MOVE."' />";
-			$actionCol .= " <input type='image' class='icon' formaction='".PAGE_DELETE."?grouped' title='Supprimer' onclick='return(confirm(\"Supprimer la sélection ?\"));' src='".SUBMIT_DELETE."' />";
+			$actionCol .= " <input type='image' class='icon' formaction='".PAGE_DELETE."?grouped' title='Supprimer' src='".SUBMIT_DELETE."' />";
 			
 			$description .= "<script type='text/javascript'>
 							function switchAll(x) {
