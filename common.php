@@ -14,6 +14,8 @@
 	} else {
 		// all green, just continue
 	}
+	error_reporting(E_ALL);
+	ini_set('display_errors', '1');
 	
 	// manage non ASCII characters
 	setlocale(LC_ALL, 'en_US.UTF8');
@@ -219,9 +221,22 @@
 			
 			//start filling
 			clearstatcache();
+			$total = count($files);
+			$index = 0;
 			foreach ($files as $fileName => $fileDescription) {
 				$filePath = $fileDescription['file'];
 				$torrent = $fileDescription['torrent'];
+				
+				$index ++;
+				$increment = 0;
+				$checkboxIndex = ($increment++)*$total+$index;
+				$linkIndex = ($increment++)*$total+$index;
+				$downloadIndex = ($increment++)*$total+$index;
+				$compressIndex = ($increment++)*$total+$index;
+				$extractIndex = ($increment++)*$total+$index;
+				$renameIndex = ($increment++)*$total+$index;
+				$moveIndex = ($increment++)*$total+$index;
+				$deleteIndex = ($increment++)*$total+$index;
 				
 				//generate data
 				$hasTorrent = $torrent != null;
@@ -235,7 +250,7 @@
 				//format data for columns
 				$fileCol = $fileName;
 				if($isDir) {
-					$fileCol = "<a href='".PAGE_EXPLORE."?".$MD5Arg."'>".ICON_EXPLORE.$fileCol."</a>";
+					$fileCol = "<a tabindex='".$linkIndex."' href='".PAGE_EXPLORE."?".$MD5Arg."'>".ICON_EXPLORE.$fileCol."</a>";
 				}
 				
 				$sizeCol = "";
@@ -266,17 +281,17 @@
 				
 				$actionCol = "";
 				if ($hasDownload && !$isDir && $realSize > 0) {
-					$actionCol .= " <a href='".PAGE_DOWNLOAD."?".$MD5Arg."' title='T&eacute;l&eacute;charger' ".($isCompleted ? "" : "onclick='return(confirm(\"Le fichier est incomplet, voulez-vous quand m&ecirc;me le t&eacute;l&eacute;charger ?\"));'").">".ICON_DOWNLOAD."</a>";
+					$actionCol .= " <a tabindex='".$downloadIndex."' href='".PAGE_DOWNLOAD."?".$MD5Arg."' title='T&eacute;l&eacute;charger' ".($isCompleted ? "" : "onclick='return(confirm(\"Le fichier est incomplet, voulez-vous quand m&ecirc;me le t&eacute;l&eacute;charger ?\"));'").">".ICON_DOWNLOAD."</a>";
 				}
 				if ($isDir) {
-					$actionCol .= " <a href='".PAGE_ZIP."?".$MD5Arg."' title='Compresser' onclick='return(confirm(\"Compresser ".$fileName." et tout sont contenu ?\"));'>".ICON_ZIP."</a>";
+					$actionCol .= " <a tabindex='".$compressIndex."' href='".PAGE_ZIP."?".$MD5Arg."' title='Compresser' onclick='return(confirm(\"Compresser ".$fileName." et tout sont contenu ?\"));'>".ICON_ZIP."</a>";
 				}
 				if ($isCompressed && $isCompleted) {
-					$actionCol .= " <a href='".PAGE_UNZIP."?".$MD5Arg."' title='D&eacute;compresser' onclick='return(confirm(\"D&eacute;compresser ".$fileName." ?\"));'>".ICON_UNZIP."</a>";
+					$actionCol .= " <a tabindex='".$extractIndex."' href='".PAGE_UNZIP."?".$MD5Arg."' title='D&eacute;compresser' onclick='return(confirm(\"D&eacute;compresser ".$fileName." ?\"));'>".ICON_UNZIP."</a>";
 				}
 				if (!$hasTorrent) {
 					$id = "ren".$MD5;
-					$actionCol .= " <a href='".PAGE_RENAME."?".$MD5Arg."' title='Renommer' id='".$id."' onclick='"
+					$actionCol .= " <a tabindex='".$renameIndex."' href='".PAGE_RENAME."?".$MD5Arg."' title='Renommer' id='".$id."' onclick='"
 										."oldName = \"".htmlentities($fileName, ENT_QUOTES | ENT_IGNORE, 'UTF-8')."\";"
 										."newName = prompt(\"Nouveau nom :\", oldName);"
 										."if (newName != oldName && newName != null && newName != \"\") {"
@@ -286,11 +301,11 @@
 											."return(false);"
 										."}"
 									."'>".ICON_RENAME."</a>";
-					$actionCol .= " <a href='".PAGE_MOVE."?".$MD5Arg."' title='D&eacute;placer'>".ICON_MOVE."</a>";
-					$actionCol .= " <a href='".PAGE_DELETE."?".$MD5Arg."' title='Supprimer'>".ICON_DELETE."</a>";
+					$actionCol .= " <a tabindex='".$moveIndex."' href='".PAGE_MOVE."?".$MD5Arg."' title='D&eacute;placer'>".ICON_MOVE."</a>";
+					$actionCol .= " <a tabindex='".$deleteIndex."' href='".PAGE_DELETE."?".$MD5Arg."' title='Supprimer'>".ICON_DELETE."</a>";
 				}
 				
-				$selectCol = ($hasTorrent ? "" : "<input type='checkbox' name='selection[]' value='".$MD5."'>");
+				$selectCol = ($hasTorrent ? "" : "<input tabindex='".$checkboxIndex."' type='checkbox' name='selection[]' value='".$MD5."'>");
 				
 				//place data in the table
 				$description .= "<tr class='row".($hasTorrent ? $isCompleted ? "-complete" : "-incomplete" : "")."'>";
