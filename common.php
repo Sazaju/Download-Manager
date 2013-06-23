@@ -100,7 +100,8 @@
 	
 	function fileName($filePath)
 	{
-		return array_pop(explode("/", $filePath));
+		$array = explode("/", $filePath);
+		return array_pop($array);
 	}
 	
 	function format_length($size) {
