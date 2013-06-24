@@ -244,7 +244,7 @@
 				$hasDownload = $filePath != null;
 				$isRootDownload = $hasDownload && dirname($filePath) == DOWNLOADS_DIR;
 				$isDir = $hasDownload && is_dir($filePath);
-				$isCompressed = isCompressedArchive($filePath);
+				$isCompressed = $filePath != null && isCompressedArchive($filePath);
 				$MD5 = $filePath != null ? getMD5ChainForPath($filePath, DOWNLOADS_DIR) : null;
 				$MD5Arg = $MD5 != null ? "md5=".$MD5 : "";
 				
