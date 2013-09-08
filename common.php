@@ -457,6 +457,11 @@
 		}
 	}
 	
+	function is_image($location) {
+		$finfo = new finfo(FILEINFO_MIME);
+		return preg_match("#image/(jpeg|jpg|png|gif|svg)#", $finfo->file($location));
+	}
+	
 	function is_torrent($filePath) {
 		$torrent = new Torrent($filePath);
 		$isAccepted = $torrent->errors() ? false : true;
