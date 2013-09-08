@@ -473,12 +473,8 @@
 	}
 	
 	function is_zip($filePath) {
-		$zip = new ZipArchive();
-		$isZip = $zip->open($filePath) === TRUE;
-		if ($isZip) {
-			$zip->close();
-		}
-		return $isZip;
+		$finfo = new finfo(FILEINFO_MIME);
+		return preg_match("#application/(zip|x-zip|x-zip-compressed)#", $finfo->file($filePath)) != 0;
 	}
 	
 	function nameWithoutExtension($name) {
