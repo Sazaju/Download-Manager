@@ -566,9 +566,15 @@
 		fclose($fm);
 	}
 	
-	function displayPicture($filePath) {
-		$array = explode("/", $filePath);
-		$array = array_map(function($a) {return rawurlencode($a);}, $array);
-		echo "<img id='show' src='".implode("/", $array)."' onload='autoResize(this);'/>";
+	function displayPicture($location) {
+		$fm = @fopen($location, 'rb');
+		if(!$fm) {
+			throw new Exception("Impossible to read the file ".$location);
+		}
+		
+		$finfo = new finfo(FILEINFO_MIME);
+		$mimeType = $finfo->file($location);
+		
+		echo "<img id='show' src='data:".$mimeType.";base64, ".base64_encode(fread($fm, filesize($location)))."' onload='autoResize(this);'/>";
 	}
 ?>
