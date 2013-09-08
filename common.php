@@ -1,5 +1,6 @@
 <?php
 	require_once('Torrent.php');
+	require_once('url.php');
 	$criticalDataFile = 'config.php';
 	$needConfig = true;
 	if (is_file($criticalDataFile)) {
@@ -55,6 +56,10 @@
 		'unzip' => array(
 			'page' => 'zipUnzip.php',
 			'icon' => 'http://upload.wikimedia.org/wikipedia/commons/f/f0/Farm-Fresh_winrar_extract.png',
+		),
+		'visualize' => array(
+			'page' => null,
+			'icon' => 'http://upload.wikimedia.org/wikipedia/commons/6/61/Nuvola_apps_xmag.png',
 		),
 	);
 	foreach($constants as $key => $data) {
@@ -232,9 +237,10 @@
 				$increment = 0;
 				$checkboxIndex = ($increment++)*$total+$index;
 				$linkIndex = ($increment++)*$total+$index;
-				$downloadIndex = ($increment++)*$total+$index;
+				$visualizeIndex = ($increment++)*$total+$index;
 				$compressIndex = ($increment++)*$total+$index;
 				$extractIndex = ($increment++)*$total+$index;
+				$downloadIndex = ($increment++)*$total+$index;
 				$renameIndex = ($increment++)*$total+$index;
 				$moveIndex = ($increment++)*$total+$index;
 				$deleteIndex = ($increment++)*$total+$index;
@@ -245,6 +251,7 @@
 				$isRootDownload = $hasDownload && dirname($filePath) == DOWNLOADS_DIR;
 				$isDir = $hasDownload && is_dir($filePath);
 				$isCompressed = $filePath != null && isCompressedArchive($filePath);
+				$isImage = is_image($filePath);
 				$MD5 = $filePath != null ? getMD5ChainForPath($filePath, DOWNLOADS_DIR) : null;
 				$MD5Arg = $MD5 != null ? "md5=".$MD5 : "";
 				
@@ -281,14 +288,18 @@
 				}
 				
 				$actionCol = "";
-				if ($hasDownload && !$isDir && $realSize > 0) {
-					$actionCol .= " <a tabindex='".$downloadIndex."' href='".PAGE_DOWNLOAD."?".$MD5Arg."' title='T&eacute;l&eacute;charger' ".($isCompleted ? "" : "onclick='return(confirm(\"Le fichier est incomplet, voulez-vous quand m&ecirc;me le t&eacute;l&eacute;charger ?\"));'").">".ICON_DOWNLOAD."</a>";
-				}
 				if ($isDir) {
 					$actionCol .= " <a tabindex='".$compressIndex."' href='".PAGE_ZIP."?".$MD5Arg."' title='Compresser' onclick='return(confirm(\"Compresser ".$fileName." et tout sont contenu ?\"));'>".ICON_ZIP."</a>";
-				}
-				if ($isCompressed && $isCompleted) {
+				} else if ($isImage && $isCompleted) {
+					$url = new Url();
+					$url->setQueryVar('md5', $MD5);
+					$url->setQueryVar('show');
+					$actionCol .= " <a tabindex='".$visualizeIndex."' href='".$url."' title='Afficher'>".ICON_VISUALIZE."</a>";
+				} else if ($isCompressed && $isCompleted) {
 					$actionCol .= " <a tabindex='".$extractIndex."' href='".PAGE_UNZIP."?".$MD5Arg."' title='D&eacute;compresser' onclick='return(confirm(\"D&eacute;compresser ".$fileName." ?\"));'>".ICON_UNZIP."</a>";
+				}
+				if ($hasDownload && !$isDir && $realSize > 0) {
+					$actionCol .= " <a tabindex='".$downloadIndex."' href='".PAGE_DOWNLOAD."?".$MD5Arg."' title='T&eacute;l&eacute;charger' ".($isCompleted ? "" : "onclick='return(confirm(\"Le fichier est incomplet, voulez-vous quand m&ecirc;me le t&eacute;l&eacute;charger ?\"));'").">".ICON_DOWNLOAD."</a>";
 				}
 				if (!$hasTorrent) {
 					$id = "ren".$MD5;
@@ -555,4 +566,10 @@
 		fclose($fm);
 	}
 	
+	function displayPicture($filePath) {
+		$array = explode("/", $filePath);
+		$array = array_map(function($a) {return rawurlencode($a);}, $array);
+		echo "<img id='show' src='".implode("/", $array)."' onload='autoResize(this);'/>";
+		echo "<script></script>";
+	}
 ?>
