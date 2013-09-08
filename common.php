@@ -570,6 +570,5 @@
 		$array = explode("/", $filePath);
 		$array = array_map(function($a) {return rawurlencode($a);}, $array);
 		echo "<img id='show' src='".implode("/", $array)."' onload='autoResize(this);'/>";
-		echo "<script></script>";
 	}
 ?>
