@@ -1,4 +1,9 @@
 <?php
+	define('TEST_MODE_ACTIVATED', !isset($_GET['noTest']) && in_array($_SERVER["SERVER_NAME"], array(
+					'127.0.0.1',
+					'localhost'
+			), true));
+	
 	require_once('Torrent.php');
 	require_once('url.php');
 	$criticalDataFile = 'config.php';
@@ -15,8 +20,11 @@
 	} else {
 		// all green, just continue
 	}
-	error_reporting(E_ALL);
-	ini_set('display_errors', '1');
+	if (TEST_MODE_ACTIVATED) {
+		error_reporting(E_ALL);
+		ini_set('display_errors', '1');
+		ini_set('display_startup_errors', TRUE);
+	}
 	
 	// manage non ASCII characters
 	setlocale(LC_ALL, 'en_US.UTF8');
