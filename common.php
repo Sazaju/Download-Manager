@@ -307,7 +307,19 @@
 					$actionCol .= " <a tabindex='".$extractIndex."' href='".PAGE_UNZIP."?".$MD5Arg."' title='D&eacute;compresser' onclick='return(confirm(\"D&eacute;compresser ".$fileName." ?\"));'>".ICON_UNZIP."</a>";
 				}
 				if ($hasDownload && !$isDir && $realSize > 0) {
-					$actionCol .= " <a tabindex='".$downloadIndex."' href='".PAGE_DOWNLOAD."?".$MD5Arg."' title='T&eacute;l&eacute;charger' ".($isCompleted ? "" : "onclick='return(confirm(\"Le fichier est incomplet, voulez-vous quand m&ecirc;me le t&eacute;l&eacute;charger ?\"));'").">".ICON_DOWNLOAD."</a>";
+					$icon = ICON_DOWNLOAD;
+					$href = PAGE_DOWNLOAD.'?'.$MD5Arg;
+					$title = htmlentities("Télécharger");
+					
+					$additionalAttributes = "";
+					if ($isCompleted) {
+						// No thing to add
+					} else {
+						$partialMessage = htmlentities("Le fichier est incomplet, voulez-vous quand même le télécharger ?");
+						$additionalAttributes .= " onclick='return(confirm(\"$partialMessage\"));'";
+					}
+					
+					$actionCol .= " <a href='$href' title='$title' tabindex='$downloadIndex'$additionalAttributes>$icon</a>";
 				}
 				if (!$hasTorrent) {
 					$id = "ren".$MD5;
