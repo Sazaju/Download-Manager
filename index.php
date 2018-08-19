@@ -52,6 +52,13 @@
 				</label>
 				<input type="submit" value="T&eacute;l&eacute;charger"/>
 			</form>
+			<form method='POST' action='upload.php' enctype="multipart/form-data">
+				<label>
+					Lien EH :
+					<input type="text" name="eh" />
+				</label>
+				<input type="submit" value="T&eacute;l&eacute;charger"/>
+			</form>
 			<p>Les fichiers sont ajout&eacute;s &agrave; la liste ci-dessous.</p>
 		</object>
 		

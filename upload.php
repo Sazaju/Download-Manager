@@ -70,6 +70,43 @@
 			array_push($warning, "Le lien <b>'".$link."'</b> n'est pas un lien Megaupload valide.");
 		}
 	}
+	
+	/* E-HENTAI */
+	
+	if (isset($_POST['eh'])) {
+		$link = $_POST['eh'];
+		$matches = array();
+		$isEHentaiLink = preg_match('#^https?://(?:exhentai|g\\.e-hentai)\\.org/g/([0-9]+)/([a-z0-9]+)/?$#i', $link, $matches);
+		if ($isEHentaiLink === 1) {
+			if (PHP_OS == "Linux") {
+				$gid = $matches[1];
+				$token = $matches[2];
+				
+				$clientId = "1465";
+				$clientKey = "KstkyFm1a7UmFgeeUhY3";
+				$clientSpec = "412021";
+				$hash = 0;// TODO
+				$request = "https://exhentai.org/archiver.php?gid=$gid&token=$token&or=$clientSpec--$hash#";
+				
+				array_push($warning, "Lien: $link");
+				array_push($warning, "GID: $gid");
+				array_push($warning, "Token: $token");
+				array_push($warning, "Hash: $hash");
+			}
+			else {
+				array_push($warning, "Fonctionnalit&eacute; non g&eacute;r&eacute;e sur les syst&egrave;mes ".PHP_OS);
+			}
+		}
+		else if ($isEHentaiLink === 0) {
+			array_push($warning, "Le lien <b>'".$link."'</b> n'est pas un lien EH valide.");
+		}
+		else if ($isEHentaiLink === FALSE) {
+			array_push($warning, "Une erreur s'est produite. Réessayez ou contactez l'administrateur.");
+		}
+		else {
+			throw new Exception("This case should not happen!");
+		}
+	}
 ?>
 
 <html>
