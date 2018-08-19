@@ -310,6 +310,7 @@
 					$icon = ICON_DOWNLOAD;
 					$href = PAGE_DOWNLOAD.'?'.$MD5Arg;
 					$title = htmlentities("Télécharger");
+					$fileName = basename($filePath);
 					
 					$additionalAttributes = "";
 					if ($isCompleted) {
@@ -319,7 +320,7 @@
 						$additionalAttributes .= " onclick='return(confirm(\"$partialMessage\"));'";
 					}
 					
-					$actionCol .= " <a href='$href' download title='$title' tabindex='$downloadIndex'$additionalAttributes>$icon</a>";
+					$actionCol .= " <a href='$href' download='$fileName' title='$title' tabindex='$downloadIndex'$additionalAttributes>$icon</a>";
 				}
 				if (!$hasTorrent) {
 					$id = "ren".$MD5;
