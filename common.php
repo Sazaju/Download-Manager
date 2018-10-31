@@ -320,6 +320,7 @@
 						$additionalAttributes .= " onclick='return(confirm(\"$partialMessage\"));'";
 					}
 					
+					$fileName = htmlentities($fileName, ENT_QUOTES | ENT_IGNORE, 'UTF-8');
 					$actionCol .= " <a href='$href' download='$fileName' title='$title' tabindex='$downloadIndex'$additionalAttributes>$icon</a>";
 				}
 				if (!$hasTorrent) {
