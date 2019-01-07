@@ -325,11 +325,18 @@
 				}
 				if (!$hasTorrent) {
 					$id = "ren".$MD5;
+					$name = pathinfo($fileName, PATHINFO_FILENAME);
+					$extension = pathinfo($fileName, PATHINFO_EXTENSION);
+					$format = function($content) {
+						return str_replace('&quot;', '\&quot;', $content); // Escape double quotes for script
+					};
 					$actionCol .= " <a tabindex='".$renameIndex."' href='".PAGE_RENAME."?".$MD5Arg."' title='Renommer' id='".$id."' onclick='"
-										."oldName = \"".htmlentities($fileName, ENT_QUOTES | ENT_IGNORE, 'UTF-8')."\";"
+										."oldName = \"".$format($name)."\";"
 										."newName = prompt(\"Nouveau nom :\", oldName);"
+										."extension = \"".$format($extension)."\";"
 										."if (newName != oldName && newName != null && newName != \"\") {"
-											."document.getElementById(\"".$id."\").href = document.getElementById(\"".$id."\").href + \"&name=\" + encodeURIComponent(newName);"
+											."newCompleteName = newName+\".\"+extension;"
+											."document.getElementById(\"".$id."\").href = document.getElementById(\"".$id."\").href + \"&name=\" + encodeURIComponent(newCompleteName);"
 											."return(true);"
 										."} else {"
 											."return(false);"
