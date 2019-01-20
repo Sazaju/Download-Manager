@@ -297,14 +297,20 @@
 				
 				$actionCol = "";
 				if ($isDir) {
-					$actionCol .= " <a tabindex='".$compressIndex."' href='".PAGE_ZIP."?".$MD5Arg."' title='Compresser' onclick='return(confirm(\"Compresser ".$fileName." et tout sont contenu ?\"));'>".ICON_ZIP."</a>";
+					$format = function($content) {
+						return str_replace("'", "&apos;", $content); // Escape single quotes for script
+					};
+					$actionCol .= " <a tabindex='".$compressIndex."' href='".PAGE_ZIP."?".$MD5Arg."' title='Compresser' onclick='return(confirm(\"Compresser ".$format($fileName)." et tout sont contenu ?\"));'>".ICON_ZIP."</a>";
 				} else if ($isImage && $isCompleted) {
 					$url = new Url();
 					$url->setQueryVar('md5', $MD5);
 					$url->setQueryVar('show');
 					$actionCol .= " <a tabindex='".$visualizeIndex."' href='".$url."' title='Afficher'>".ICON_VISUALIZE."</a>";
 				} else if ($isCompressed && $isCompleted) {
-					$actionCol .= " <a tabindex='".$extractIndex."' href='".PAGE_UNZIP."?".$MD5Arg."' title='D&eacute;compresser' onclick='return(confirm(\"D&eacute;compresser ".$fileName." ?\"));'>".ICON_UNZIP."</a>";
+					$format = function($content) {
+						return str_replace("'", "&apos;", $content); // Escape single quotes for script
+					};
+					$actionCol .= " <a tabindex='".$extractIndex."' href='".PAGE_UNZIP."?".$MD5Arg."' title='D&eacute;compresser' onclick='return(confirm(\"D&eacute;compresser ".$format($fileName)." ?\"));'>".ICON_UNZIP."</a>";
 				}
 				if ($hasDownload && !$isDir && $realSize > 0) {
 					$icon = ICON_DOWNLOAD;
@@ -327,15 +333,21 @@
 					$id = "ren".$MD5;
 					$name = pathinfo($fileName, PATHINFO_FILENAME);
 					$extension = pathinfo($fileName, PATHINFO_EXTENSION);
+					if ($extension == "") {
+						$name = $fileName;
+					} else {
+						$extension = ".$extension";
+					}
 					$format = function($content) {
-						return str_replace('&quot;', '\&quot;', $content); // Escape double quotes for script
+						$content = str_replace("&apos;", "\&apos;", str_replace("'", "&apos;", $content)); // Escape single quotes for script
+						return str_replace('&quot;', '\&quot;', str_replace('"', "&quot;", $content)); // Escape double quotes for script
 					};
 					$actionCol .= " <a tabindex='".$renameIndex."' href='".PAGE_RENAME."?".$MD5Arg."' title='Renommer' id='".$id."' onclick='"
 										."oldName = \"".$format($name)."\";"
 										."newName = prompt(\"Nouveau nom :\", oldName);"
 										."extension = \"".$format($extension)."\";"
 										."if (newName != oldName && newName != null && newName != \"\") {"
-											."newCompleteName = newName+\".\"+extension;"
+											."newCompleteName = newName+extension;"
 											."document.getElementById(\"".$id."\").href = document.getElementById(\"".$id."\").href + \"&name=\" + encodeURIComponent(newCompleteName);"
 											."return(true);"
 										."} else {"
