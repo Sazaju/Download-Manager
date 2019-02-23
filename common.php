@@ -322,7 +322,7 @@
 					
 					$additionalAttributes = "";
 					if ($isCompleted) {
-						// No thing to add
+						// Nothing to add
 					} else {
 						$partialMessage = htmlentities("Le fichier est incomplet, voulez-vous quand même le télécharger ?");
 						$additionalAttributes .= " onclick='return(confirm(\"$partialMessage\"));'";
