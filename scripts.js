@@ -1,17 +1,17 @@
-function findLeft(iobj) {
+function findLeft(item) {
 	ttop = 0;
-	while(iobj) {
-		ttop += iobj.offsetLeft;
-		iobj = iobj.offsetParent;
+	while(item) {
+		ttop += item.offsetLeft;
+		item = item.offsetParent;
 	}
 	return ttop;
 }
 
-function findTop(iobj) {
+function findTop(item) {
 	ttop = 0;
-	while(iobj) {
-		ttop += iobj.offsetTop;
-		iobj = iobj.offsetParent;
+	while(item) {
+		ttop += item.offsetTop;
+		item = item.offsetParent;
 	}
 	return ttop;
 }
