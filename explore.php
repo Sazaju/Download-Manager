@@ -14,12 +14,12 @@
 		<script src="scripts.js"></script>
 	</head>
 	<body>
-		<h1><?php echo $title;?></h1>
-		
 		<?php displayWarning(); ?>
 		
 		<?php
 			if(is_dir($filePath)) {
+				echo "<h1><?php echo $title;?></h1>";
+				
 				$parentDirPath = dirname($filePath);
 				$parentDirName = basename($parentDirPath);
 				$parentMD5 = getMD5ChainForPath($parentDirPath, DOWNLOADS_DIR);
@@ -30,6 +30,60 @@
 				echo getDirectoryDescription($filePath);
 				echo $parentLink;
 			} else if (is_file($filePath)) {
+				echo "<div class='navigator'>";
+				
+				$md5 = getMD5ChainForPath($filePath, DOWNLOADS_DIR);
+				$downloadUrl = PAGE_DOWNLOAD.'?md5='.$md5;
+				
+				$parentDirPath = dirname($filePath);
+				$parentMD5 = getMD5ChainForPath($parentDirPath, DOWNLOADS_DIR);
+				$parentUrl = $parentMD5 === "" ? "index.php" : "explore.php?md5=".$parentMD5;
+				$parentLink = "<a class='parent' href='$parentUrl' title='Go to parent directory'>".ICON_PARENT."</a>";
+				
+				$files = getContentOf($parentDirPath);
+				$currentIndex = array_search(basename($filePath), $files);
+				$downloadLink = "<a class='download' href='$downloadUrl' title='Download file'>".ICON_DOWNLOAD."</a>";
+				
+				if ($currentIndex == 0) {
+					$firstLink = "<a class='first hidden'>".ICON_FIRST."</a>";
+				} else {
+					$firstPath = $parentDirPath."/".$files[0];
+					$firstUrl = new Url();
+					$firstUrl->setQueryVar('md5', getMD5ChainForPath($firstPath, DOWNLOADS_DIR));
+					$firstLink = "<a class='first' href='$firstUrl' title='Go to first'>".ICON_FIRST."</a>";
+				}
+				
+				if ($currentIndex == 0) {
+					$previousLink = "<a class='previous hidden'>".ICON_PREVIOUS."</a>";
+				} else {
+					$previousPath = $parentDirPath."/".$files[$currentIndex-1];
+					$previousUrl = new Url();
+					$previousUrl->setQueryVar('md5', getMD5ChainForPath($previousPath, DOWNLOADS_DIR));
+					$previousLink = "<a class='previous' href='$previousUrl' title='Go to previous'>".ICON_PREVIOUS."</a>";
+				}
+				
+				if ($currentIndex == sizeof($files)-1) {
+					$nextLink = "<a class='next hidden'>".ICON_NEXT."</a>";
+				} else {
+					$nextPath = $parentDirPath."/".$files[$currentIndex+1];
+					$nextUrl = new Url();
+					$nextUrl->setQueryVar('md5', getMD5ChainForPath($nextPath, DOWNLOADS_DIR));
+					$nextLink = "<a class='next' href='$nextUrl' title='Go to next'>".ICON_NEXT."</a>";
+				}
+				
+				if ($currentIndex == sizeof($files)-1) {
+					$lastLink = "<a class='last hidden'>".ICON_LAST."</a>";
+				} else {
+					$lastPath = $parentDirPath."/".$files[sizeof($files)-1];
+					$lastUrl = new Url();
+					$lastUrl->setQueryVar('md5', getMD5ChainForPath($lastPath, DOWNLOADS_DIR));
+					$lastLink = "<a class='last' href='$lastUrl' title='Go to last'>".ICON_LAST."</a>";
+				}
+				
+				echo "<div class='links'>$firstLink$previousLink$parentLink$downloadLink$nextLink$lastLink</div>";
+				echo "<div class='content'>";
+				echo "$previousLink$nextLink";
+				echo "<div class='file'>";
 				if (is_image($filePath)) {
 					echo get_HTML_picture($filePath);
 				} else if (is_video($filePath)) {
@@ -40,13 +94,14 @@
 					
 					$fileName = basename($filePath);
 					
-					$md5 = getMD5ChainForPath($filePath, DOWNLOADS_DIR);
-					
-					$title = htmlentities("Télécharger");
+					$linkName = htmlentities("Télécharger");
 					echo "<p>Ce type de fichier (<code>$mimeType</code>) n'est pas géré. Cliquez ici pour le télécharger :</p>";
-					echo "<a href='".PAGE_DOWNLOAD.'?md5='.$md5."' download='$fileName' title='$title'>$title</a>";
+					echo "<a href='".$downloadUrl."' download='$fileName' title='$linkName'>$linkName</a>";
 					
 				}
+				echo "</div>";
+				echo "</div>";
+				echo "</div>";
 			} else {
 				throw new Exception("Unmanaged resource: ".$filePath);
 			}

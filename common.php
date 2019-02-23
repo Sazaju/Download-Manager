@@ -69,6 +69,26 @@
 			'page' => null,
 			'icon' => 'http://upload.wikimedia.org/wikipedia/commons/6/61/Nuvola_apps_xmag.png',
 		),
+		'first' => array(
+			'page' => null,
+			'icon' => 'https://upload.wikimedia.org/wikipedia/commons/1/19/Up_left_arrow_Hexagonal_Icon.svg',
+		),
+		'previous' => array(
+			'page' => null,
+			'icon' => 'https://upload.wikimedia.org/wikipedia/commons/e/eb/Left_arrow_Hexagonal_Icon.svg',
+		),
+		'next' => array(
+			'page' => null,
+			'icon' => 'https://upload.wikimedia.org/wikipedia/commons/6/6b/Right_arrow_Hexagonal_Icon.svg',
+		),
+		'last' => array(
+			'page' => null,
+			'icon' => 'https://upload.wikimedia.org/wikipedia/commons/a/ac/Up_right_arrow_Hexagonal_Icon.svg',
+		),
+		'parent' => array(
+			'page' => null,
+			'icon' => 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Up_arrow_Hexagonal_Icon.svg',
+		),
 	);
 	foreach($constants as $key => $data) {
 		define("PAGE_".strtoupper($key), $data['page']);
