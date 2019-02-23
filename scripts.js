@@ -40,4 +40,8 @@ function autoResize(item) {
 		item.style.width = availableWidth+'px';
 		item.style.height = 'auto';
 	}
+	
+	if(originalWidth != item.width) {
+		autoResize(item);
+	}
 }
