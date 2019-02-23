@@ -29,10 +29,24 @@
 				echo $parentLink;
 				echo getDirectoryDescription($filePath);
 				echo $parentLink;
-			} else if (is_image($filePath)) {
-				echo get_HTML_picture($filePath);
-			} else if (is_video($filePath)) {
-				echo get_HTML_video($filePath);
+			} else if (is_file($filePath)) {
+				if (is_image($filePath)) {
+					echo get_HTML_picture($filePath);
+				} else if (is_video($filePath)) {
+					echo get_HTML_video($filePath);
+				} else {
+					$finfo = new finfo(FILEINFO_MIME_TYPE);
+					$mimeType = $finfo->file($filePath);
+					
+					$fileName = basename($filePath);
+					
+					$md5 = getMD5ChainForPath($filePath, DOWNLOADS_DIR);
+					
+					$title = htmlentities("Télécharger");
+					echo "<p>Ce type de fichier (<code>$mimeType</code>) n'est pas géré. Cliquez ici pour le télécharger :</p>";
+					echo "<a href='".PAGE_DOWNLOAD.'?md5='.$md5."' download='$fileName' title='$title'>$title</a>";
+					
+				}
 			} else {
 				throw new Exception("Unmanaged resource: ".$filePath);
 			}
