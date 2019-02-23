@@ -473,7 +473,7 @@
 			$parentPath = realpath(DOWNLOADS_DIR);
 			$realPath = realpath($filePath);
 			$fileName = basename($filePath);
-			$relativeFilePath = substr($filePath, strlen($parentPath));
+			$relativeFilePath = substr($realPath, strlen($parentPath));
 			if (!file_exists($filePath) || substr($realPath, 0, strlen($parentPath)) != $parentPath) {
 				debug_print_backtrace();
 				die("Chemin inaccessible : ".$relativeFilePath);
