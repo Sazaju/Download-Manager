@@ -30,7 +30,6 @@
 				echo getDirectoryDescription($filePath);
 				echo $parentLink;
 			} else if (is_image($filePath)) {
-				echo "<h2>Aperçu :</h2>";
 				display_picture($filePath);
 			} else if (is_video($filePath)) {
 				display_video($filePath);
