@@ -30,9 +30,9 @@
 				echo getDirectoryDescription($filePath);
 				echo $parentLink;
 			} else if (is_image($filePath)) {
-				display_picture($filePath);
+				echo get_HTML_picture($filePath);
 			} else if (is_video($filePath)) {
-				display_video($filePath);
+				echo get_HTML_video($filePath);
 			} else {
 				throw new Exception("Unmanaged resource: ".$filePath);
 			}

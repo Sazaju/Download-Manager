@@ -615,7 +615,7 @@
 		fclose($fm);
 	}
 	
-	function display_picture($location) {
+	function get_HTML_picture($location) {
 		$fm = @fopen($location, 'rb');
 		if(!$fm) {
 			throw new Exception("Impossible to read the file ".$location);
@@ -624,10 +624,10 @@
 		$finfo = new finfo(FILEINFO_MIME_TYPE);
 		$mimeType = $finfo->file($location);
 		
-		echo "<img id='show' src='data:".$mimeType.";base64, ".base64_encode(fread($fm, filesize($location)))."' onload='autoResize(this);'/>";
+		return "<img id='show' src='data:".$mimeType.";base64, ".base64_encode(fread($fm, filesize($location)))."' onload='autoResize(this);'/>";
 	}
 	
-	function display_video($location) {
+	function get_HTML_video($location) {
 		$finfo = new finfo(FILEINFO_MIME_TYPE);
 		$mimeType = $finfo->file($location);
 		
@@ -641,9 +641,9 @@
 			// Cannot parse result
 			$autoResize = "";
 		}
-		echo "<video id='video' $autoResize controls='true' autoplay='true'>";
-		echo "<source src='".$location."' type='".$mimeType."'>";
-		echo "Your browser does not support the video tag.";
-		echo "</video>";
+		return "<video id='video' $autoResize controls='true' autoplay='true'>
+			<source src='".$location."' type='".$mimeType."'>
+			Your browser does not support the video tag.
+		</video>";
 	}
 ?>
