@@ -16,25 +16,28 @@ function findTop(item) {
 	return ttop;
 }
 
-function autoResize(image) {
-	originalWidth = image.width;
-	originalHeight = image.height;
-	originalX = findLeft(image);
-	originalY = findTop(image);
-	originalRatio = originalWidth/originalHeight;
+function autoResize(item) {
+	originalWidth = item.width;
+	originalHeight = item.height;
 	
 	windowWidth = window.innerWidth;
 	windowHeight = window.innerHeight;
-	
-	availableWidth = windowWidth - originalX - 20;// 20 = potential scroll bar size
+	originalX = findLeft(item);
+	originalY = findTop(item);
+	scrollBarSize = 20;
+	availableWidth = windowWidth - originalX - scrollBarSize;
 	availableHeight = windowHeight - originalY;
-	availableRatio = availableWidth/availableHeight;
 	
-	if (availableRatio > originalRatio) {
-		image.style.width = 'auto';
-		image.style.height = availableHeight+'px';
+	ratioWidth = availableWidth/originalWidth;
+	ratioHeight = availableHeight/originalHeight;
+	
+	if (ratioWidth == NaN || ratioHeight == NaN) {
+		alert("Cannot get size, don't auto-resize.");
+	} else if (ratioWidth > ratioHeight) {
+		item.style.width = 'auto';
+		item.style.height = availableHeight+'px';
 	} else {
-		image.style.width = availableWidth+'px';
-		image.style.height = 'auto';
+		item.style.width = availableWidth+'px';
+		item.style.height = 'auto';
 	}
 }
