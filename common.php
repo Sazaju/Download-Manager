@@ -260,6 +260,7 @@
 				$isDir = $hasDownload && is_dir($filePath);
 				$isCompressed = $filePath != null && isCompressedArchive($filePath);
 				$isImage = $hasDownload && is_image($filePath);
+				$isVideo = $hasDownload && is_video($filePath);
 				$MD5 = $filePath != null ? getMD5ChainForPath($filePath, DOWNLOADS_DIR) : null;
 				$MD5Arg = $MD5 != null ? "md5=".$MD5 : "";
 				
@@ -295,13 +296,15 @@
 					$isCompleted = true;
 				}
 				
+				$isViewable = $isImage || $isVideo;
+				
 				$actionCol = "";
 				if ($isDir) {
 					$format = function($content) {
 						return str_replace("'", "&apos;", $content); // Escape single quotes for script
 					};
 					$actionCol .= " <a tabindex='".$compressIndex."' href='".PAGE_ZIP."?".$MD5Arg."' title='Compresser' onclick='return(confirm(\"Compresser ".$format($fileName)." et tout sont contenu ?\"));'>".ICON_ZIP."</a>";
-				} else if ($isImage && $isCompleted) {
+				} else if ($isViewable && $isCompleted) {
 					$url = new Url();
 					$url->setQueryVar('md5', $MD5);
 					$url->setQueryVar('show');
@@ -514,6 +517,11 @@
 		return preg_match("#image/(jpeg|jpg|png|gif|svg)#", $finfo->file($location));
 	}
 	
+	function is_video($location) {
+		$finfo = new finfo(FILEINFO_MIME);
+		return preg_match("#video/(mp4|quicktime|x-msvideo|x-ms-wmv|webm|ogg)#", $finfo->file($location));
+	}
+	
 	function is_torrent($filePath) {
 		$torrent = new Torrent($filePath);
 		$isAccepted = $torrent->errors() ? false : true;
@@ -617,5 +625,25 @@
 		$mimeType = $finfo->file($location);
 		
 		echo "<img id='show' src='data:".$mimeType.";base64, ".base64_encode(fread($fm, filesize($location)))."' onload='autoResize(this);'/>";
+	}
+	
+	function display_video($location) {
+		$finfo = new finfo(FILEINFO_MIME_TYPE);
+		$mimeType = $finfo->file($location);
+		
+		$result = exec("exiftool -ImageSize -S '$location' | awk '{print $2}'");
+		if(preg_match("#\\d+x\\d+#", $result)) {
+			$size = explode("x", $result);
+			$width = $size[0];
+			$height = $size[1];
+			$autoResize = "width='$width' height='$height' oncanplay='autoResize(this);'";
+		} else {
+			// Cannot parse result
+			$autoResize = "";
+		}
+		echo "<video id='video' $autoResize controls='true' autoplay='true'>";
+		echo "<source src='".$location."' type='".$mimeType."'>";
+		echo "Your browser does not support the video tag.";
+		echo "</video>";
 	}
 ?>
