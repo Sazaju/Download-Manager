@@ -38,11 +38,11 @@
 				$parentDirPath = dirname($filePath);
 				$parentMD5 = getMD5ChainForPath($parentDirPath, DOWNLOADS_DIR);
 				$parentUrl = $parentMD5 === "" ? "index.php" : "explore.php?md5=".$parentMD5;
-				$parentLink = "<a class='parent' href='$parentUrl' title='Go to parent directory'>".ICON_PARENT."</a>";
+				$parentLink = "<a class='parent' href='$parentUrl' title='Retour au répertoire parent'>".ICON_PARENT."</a>";
 				
 				$files = array_filter(getContentOf($parentDirPath), function($f) use($parentDirPath) {return is_file("$parentDirPath/$f");});
 				$currentIndex = array_search(basename($filePath), $files);
-				$downloadLink = "<a class='download' href='$downloadUrl' title='Download file'>".ICON_DOWNLOAD."</a>";
+				$downloadLink = "<a class='download' href='$downloadUrl' title='T&eacute;l&eacute;charger'>".ICON_DOWNLOAD."</a>";
 				
 				if ($currentIndex == 0) {
 					$firstLink = "<a class='first hidden'>".ICON_FIRST."</a>";
@@ -50,7 +50,7 @@
 					$firstPath = $parentDirPath."/".$files[0];
 					$firstUrl = new Url();
 					$firstUrl->setQueryVar('md5', getMD5ChainForPath($firstPath, DOWNLOADS_DIR));
-					$firstLink = "<a class='first' href='$firstUrl' title='Go to first'>".ICON_FIRST."</a>";
+					$firstLink = "<a class='first' href='$firstUrl' title='Premier'>".ICON_FIRST."</a>";
 				}
 				
 				if ($currentIndex == 0) {
@@ -59,7 +59,7 @@
 					$previousPath = $parentDirPath."/".$files[$currentIndex-1];
 					$previousUrl = new Url();
 					$previousUrl->setQueryVar('md5', getMD5ChainForPath($previousPath, DOWNLOADS_DIR));
-					$previousLink = "<a class='previous' href='$previousUrl' title='Go to previous'>".ICON_PREVIOUS."</a>";
+					$previousLink = "<a class='previous' href='$previousUrl' title='Précédent'>".ICON_PREVIOUS."</a>";
 				}
 				
 				if ($currentIndex == sizeof($files)-1) {
@@ -68,7 +68,7 @@
 					$nextPath = $parentDirPath."/".$files[$currentIndex+1];
 					$nextUrl = new Url();
 					$nextUrl->setQueryVar('md5', getMD5ChainForPath($nextPath, DOWNLOADS_DIR));
-					$nextLink = "<a class='next' href='$nextUrl' title='Go to next'>".ICON_NEXT."</a>";
+					$nextLink = "<a class='next' href='$nextUrl' title='Suivant'>".ICON_NEXT."</a>";
 				}
 				
 				if ($currentIndex == sizeof($files)-1) {
@@ -77,7 +77,7 @@
 					$lastPath = $parentDirPath."/".$files[sizeof($files)-1];
 					$lastUrl = new Url();
 					$lastUrl->setQueryVar('md5', getMD5ChainForPath($lastPath, DOWNLOADS_DIR));
-					$lastLink = "<a class='last' href='$lastUrl' title='Go to last'>".ICON_LAST."</a>";
+					$lastLink = "<a class='last' href='$lastUrl' title='Dernier'>".ICON_LAST."</a>";
 				}
 				
 				echo "<div class='links'>$firstLink$previousLink$parentLink$downloadLink$nextLink$lastLink</div>";
