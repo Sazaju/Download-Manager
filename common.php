@@ -307,7 +307,6 @@
 				} else if ($isViewable && $isCompleted) {
 					$url = new Url();
 					$url->setQueryVar('md5', $MD5);
-					$url->setQueryVar('show');
 					$actionCol .= " <a tabindex='".$visualizeIndex."' href='".$url."' title='Afficher'>".ICON_VISUALIZE."</a>";
 				} else if ($isCompressed && $isCompleted) {
 					$format = function($content) {
