@@ -613,7 +613,7 @@
 			throw new Exception("Impossible to read the file ".$location);
 		}
 		
-		$finfo = new finfo(FILEINFO_MIME);
+		$finfo = new finfo(FILEINFO_MIME_TYPE);
 		$mimeType = $finfo->file($location);
 		
 		echo "<img id='show' src='data:".$mimeType.";base64, ".base64_encode(fread($fm, filesize($location)))."' onload='autoResize(this);'/>";
