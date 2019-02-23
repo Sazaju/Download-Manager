@@ -31,7 +31,7 @@
 				echo $parentLink;
 			} else if (is_file($filePath)) {
 				echo "<h2>Aperçu :</h2>";
-				echo displayPicture($filePath);
+				display_picture($filePath);
 			} else {
 				throw new Exception("Unmanaged resource: ".$filePath);
 			}

@@ -607,7 +607,7 @@
 		fclose($fm);
 	}
 	
-	function displayPicture($location) {
+	function display_picture($location) {
 		$fm = @fopen($location, 'rb');
 		if(!$fm) {
 			throw new Exception("Impossible to read the file ".$location);
