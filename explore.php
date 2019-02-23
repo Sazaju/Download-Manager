@@ -40,7 +40,7 @@
 				$parentUrl = $parentMD5 === "" ? "index.php" : "explore.php?md5=".$parentMD5;
 				$parentLink = "<a class='parent' href='$parentUrl' title='Retour au répertoire parent'>".ICON_PARENT."</a>";
 				
-				$files = array_filter(getContentOf($parentDirPath), function($f) use($parentDirPath) {return is_file("$parentDirPath/$f");});
+				$files = array_values(array_filter(getContentOf($parentDirPath), function($f) use($parentDirPath) {return is_file("$parentDirPath/$f");}));
 				$currentIndex = array_search(basename($filePath), $files);
 				$downloadLink = "<a class='download' href='$downloadUrl' title='T&eacute;l&eacute;charger'>".ICON_DOWNLOAD."</a>";
 				
