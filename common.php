@@ -325,9 +325,7 @@
 					};
 					$actionCol .= " <a tabindex='".$compressIndex."' href='".PAGE_ZIP."?".$MD5Arg."' title='Compresser' onclick='return(confirm(\"Compresser ".$format($fileName)." et tout sont contenu ?\"));'>".ICON_ZIP."</a>";
 				} else if ($isViewable && $isCompleted) {
-					$url = new Url();
-					$url->setQueryVar('md5', $MD5);
-					$actionCol .= " <a tabindex='".$visualizeIndex."' href='".$url."' title='Afficher'>".ICON_VISUALIZE."</a>";
+					$actionCol .= " <a tabindex='$visualizeIndex' href='".PAGE_EXPLORE."?md5=$MD5' title='Afficher'>".ICON_VISUALIZE."</a>";
 				} else if ($isCompressed && $isCompleted) {
 					$format = function($content) {
 						return str_replace("'", "&apos;", $content); // Escape single quotes for script
