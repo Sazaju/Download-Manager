@@ -25,7 +25,8 @@
 				$parentMD5 = getMD5ChainForPath($parentDirPath, DOWNLOADS_DIR);
 				$parentLink = "<p>Dossier parent : <a href='".($parentMD5 === "" ? "index.php'>liste de t&eacute;l&eacute;chargement" : "explore.php?md5=".$parentMD5."'>".$parentDirName)."</a></p>";
 				
-				echo "<h2>Contenu du dossier :</h2>";
+				$dirName = basename($filePath);
+				echo "<h2>Contenu du dossier : $dirName</h2>";
 				echo $parentLink;
 				echo getDirectoryDescription($filePath);
 				echo $parentLink;
