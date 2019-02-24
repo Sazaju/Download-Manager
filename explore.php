@@ -41,7 +41,8 @@
 				$parentLink = "<a class='parent' href='$parentUrl' title='Retour au répertoire parent'>".ICON_PARENT."</a>";
 				
 				$files = array_values(array_filter(getContentOf($parentDirPath), function($f) use($parentDirPath) {return is_file("$parentDirPath/$f");}));
-				$currentIndex = array_search(basename($filePath), $files);
+				$fileName = basename($filePath);
+				$currentIndex = array_search($fileName, $files);
 				$downloadLink = "<a class='download' href='$downloadUrl' title='T&eacute;l&eacute;charger'>".ICON_DOWNLOAD."</a>";
 				
 				if ($currentIndex == 0) {
@@ -80,6 +81,7 @@
 					$lastLink = "<a class='last' href='$lastUrl' title='Dernier'>".ICON_LAST."</a>";
 				}
 				
+				echo "<h1>$fileName</h1>";
 				echo "<div class='links'>$firstLink$previousLink$parentLink$downloadLink$nextLink$lastLink</div>";
 				echo "<div class='content'>";
 				echo "$previousLink$nextLink";

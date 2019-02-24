@@ -35,6 +35,17 @@ tr.row:hover td, tr.row-complete:hover td, tr.row-incomplete:hover td {
 	background-color:#DDDDFF;
 }
 
+div.navigator h1 {
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	left: 50%;
+	transform: translate(-50%, 0);
+	font-style: normal;
+	font-size: 100%;
+	font-weight: normal;
+}
+
 div.navigator .first img, div.navigator .previous img, div.navigator .next img, div.navigator .last img, div.navigator .parent img, div.navigator .download img {
 	max-width: 50px;
 	height: auto;
