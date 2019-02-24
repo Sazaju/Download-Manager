@@ -62,6 +62,11 @@
 					$previousUrl = new Url();
 					$previousUrl->setQueryVar('md5', getMD5ChainForPath($previousPath, DOWNLOADS_DIR));
 					$previousLink = "<a class='previous' href='$previousUrl' title='Précédent'>".ICON_PREVIOUS."</a>";
+					
+					if (is_image($previousPath)) {
+						// Load image
+						echo "<img class='preload' href='$previousPath'/>";
+					}
 				}
 				
 				if ($currentIndex == sizeof($files)-1) {
@@ -71,6 +76,11 @@
 					$nextUrl = new Url();
 					$nextUrl->setQueryVar('md5', getMD5ChainForPath($nextPath, DOWNLOADS_DIR));
 					$nextLink = "<a class='next' href='$nextUrl' title='Suivant'>".ICON_NEXT."</a>";
+					
+					if (is_image($nextPath)) {
+						// Load image
+						echo "<img class='preload' href='$nextPath'/>";
+					}
 				}
 				
 				if ($currentIndex == sizeof($files)-1) {

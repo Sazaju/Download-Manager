@@ -3,6 +3,13 @@ td {
 	padding:0.2em;
 }
 
+.preload {
+	visibility: hidden;
+	display: none;
+	position: absolute;
+	top: -99999px;
+}
+
 .icon {
 	border:0;
 	width:25px;
