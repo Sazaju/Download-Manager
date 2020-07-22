@@ -96,7 +96,8 @@ div.navigator .content .previous, div.navigator .content .next {
 	position: absolute;
 	top: 0;
 	height: 100%;
-	width: 50%;
+	width: 33%;
+	z-index: 1;
 }
 
 div.navigator .content .previous {
@@ -110,7 +111,7 @@ div.navigator .content .next {
 div.navigator .content .previous img, div.navigator .content .next img {
 	display: block;
 	position: absolute;
-	width: 10%;
+	width: 20%;
 	top: 50%;
 	transform: translate(0, -50%);
 }
