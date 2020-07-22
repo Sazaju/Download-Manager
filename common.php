@@ -382,10 +382,10 @@
 				
 				//place data in the table
 				$description .= "<tr class='row".($hasTorrent ? $isCompleted ? "-complete" : "-incomplete" : "")."'>";
-					$description .= "<td>".$selectCol."</td>";
-					$description .= "<td>".$fileCol."</td>";
-					$description .= "<td>".$sizeCol."</td>";
-					$description .= "<td><center>".$actionCol."</center></td>";
+					$description .= "<td class='check'>".$selectCol."</td>";
+					$description .= "<td class='file'>".$fileCol."</td>";
+					$description .= "<td class='size'>".$sizeCol."</td>";
+					$description .= "<td class='actions'><center>".$actionCol."</center></td>";
 				$description .= "</tr>";
 			}
 			

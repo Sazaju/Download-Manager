@@ -128,3 +128,51 @@ div.navigator .content .file {
 	position: relative;
 	top: 0;
 }
+
+/* For small screens */
+@media only screen and (max-width: 1000px) {
+
+body {
+	font-size: 200%;
+}
+
+table td.file .icon {
+	width: 40px;
+	height: 40px;
+}
+
+table {
+	table-layout: fixed;
+}
+table td.check {
+	padding: 0.5em;
+}
+table td.file {
+	max-width: 50%;
+}
+table td.file * {
+	display: flex;
+	flex-wrap: wrap;
+}
+table td.size {
+	white-space: nowrap;
+}
+table td.actions {
+	margin: 0;
+	padding: 0;
+	white-space: nowrap;
+}
+table td.actions * {
+}
+table td.actions .icon {
+	margin: 0;
+	padding: 0;
+        width:75px;
+        height:75px;
+}
+
+input[type=checkbox] {
+  transform: scale(3);
+}
+
+}
